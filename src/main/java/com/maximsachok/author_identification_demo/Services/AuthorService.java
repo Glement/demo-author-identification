@@ -32,6 +32,16 @@ public class AuthorService {
             throw new UnexpectedException("Unexpected code: " + response.getStatus());
     }
 
+    public AuthorDto findPossibleAuthor(ProjectDto projectDto) throws UnexpectedException, ExecutionException, InterruptedException {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(API_PATH+"find");
+        Response response = target.request(MediaType.APPLICATION_JSON).buildPost(Entity.json(projectDto)).submit().get();
+        if (response.getStatus()==200)
+            return getAuthor(response.readEntity(Long.class)).get();
+        else
+            throw new UnexpectedException("Unexpected code: " + response.getStatus());
+    }
+
     public Optional<List<ProjectDto>> getAuthorProjects(Long id) throws UnexpectedException {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(API_PATH+"author/"+id+"/projects");

@@ -226,12 +226,15 @@ public class ProjectLayout extends VerticalLayout {
     }
     private void initProjectNameTextArea(){
         projectNameTextArea = new TextArea("Project Name");
+        projectNameTextArea.setReadOnly(true);
     }
     private void initProjectDescriptionTextArea(){
         projectDescriptionTextArea = new TextArea("Project Description");
+        projectDescriptionTextArea.setReadOnly(true);
     }
     private void initProjectKeywordsTextArea(){
         projectKeywordsTextArea = new TextArea("Project Keywords");
+        projectKeywordsTextArea.setReadOnly(true);
     }
 
     private Button buildRemoveButton(AuthorDto a) {
