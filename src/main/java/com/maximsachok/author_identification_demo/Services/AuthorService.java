@@ -46,6 +46,16 @@ public class AuthorService {
             throw new UnexpectedException("Unexpected code: " + response.getStatus());
     }
 
+    public boolean refreshClassifier() throws UnexpectedException {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(API_PATH+"refresh-classifier");
+        Response response = target.request(MediaType.APPLICATION_JSON).get();
+        if (response.getStatus()==202)
+            return true;
+        else
+            throw new UnexpectedException("Unexpected code: " + response.getStatus());
+    }
+
     public Optional<List<ProjectDto>> getAuthorProjects(Long id) throws UnexpectedException {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(API_PATH+"author/"+id+"/projects");

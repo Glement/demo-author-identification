@@ -27,6 +27,7 @@ public class AuthorIdentificationLayout extends VerticalLayout {
     private Grid<SearchResultDto> possibleAuthorsGrid;
     private AuthorService authorService;
     private Label timeToLoadLabel;
+    private Button refreshClassifierButton;
     public AuthorIdentificationLayout(){
         initAuthorService();
         initProjectDescriptionTextField();
@@ -35,8 +36,20 @@ public class AuthorIdentificationLayout extends VerticalLayout {
         initGetPossibleAuthorIDButton();
         initPossibleAuthorsGrid();
         initTimeToLoadLabel();
+        initRefreshClassifierButton();
         add(new HorizontalLayout(projectNameTextArea, projectDescriptionTextArea, projectKeywordsTextArea),
-                getPossibleAuthorIDButton, timeToLoadLabel, possibleAuthorsGrid);
+                getPossibleAuthorIDButton, timeToLoadLabel, refreshClassifierButton, possibleAuthorsGrid);
+    }
+
+    private void initRefreshClassifierButton(){
+        refreshClassifierButton = new Button("Refresh classifier", clickEvent -> {
+            try {
+                authorService.refreshClassifier();
+            } catch (UnexpectedException e) {
+                e.printStackTrace();
+            }
+            Notification.show("Classifier is updating").setPosition(Notification.Position.TOP_CENTER);
+        });
     }
 
     private void initTimeToLoadLabel(){
