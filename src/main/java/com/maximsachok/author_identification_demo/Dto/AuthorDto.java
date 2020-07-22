@@ -1,6 +1,8 @@
 package com.maximsachok.author_identification_demo.Dto;
 
-public class AuthorDto {
+import java.io.Serializable;
+
+public class AuthorDto implements Serializable {
     private Long id;
 
     public AuthorDto(Long id) {
@@ -24,4 +26,5 @@ public class AuthorDto {
                 "id=" + id +
                 '}';
     }
+
 }

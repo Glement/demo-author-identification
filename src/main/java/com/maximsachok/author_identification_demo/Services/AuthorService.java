@@ -2,6 +2,7 @@ package com.maximsachok.author_identification_demo.Services;
 
 import com.maximsachok.author_identification_demo.Dto.AuthorDto;
 import com.maximsachok.author_identification_demo.Dto.ProjectDto;
+import com.maximsachok.author_identification_demo.Dto.SearchResultDto;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -11,6 +12,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.rmi.UnexpectedException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -32,12 +34,14 @@ public class AuthorService {
             throw new UnexpectedException("Unexpected code: " + response.getStatus());
     }
 
-    public AuthorDto findPossibleAuthor(ProjectDto projectDto) throws UnexpectedException, ExecutionException, InterruptedException {
+    public List<SearchResultDto> findPossibleAuthor(ProjectDto projectDto) throws UnexpectedException, ExecutionException, InterruptedException {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(API_PATH+"find");
         Response response = target.request(MediaType.APPLICATION_JSON).buildPost(Entity.json(projectDto)).submit().get();
         if (response.getStatus()==200)
-            return getAuthor(response.readEntity(Long.class)).get();
+            return response.readEntity(new GenericType<List<SearchResultDto>>(){});
+        else if(response.getStatus()==202)
+            return new ArrayList<>();
         else
             throw new UnexpectedException("Unexpected code: " + response.getStatus());
     }
