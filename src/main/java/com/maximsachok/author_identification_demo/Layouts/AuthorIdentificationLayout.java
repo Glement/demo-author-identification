@@ -28,6 +28,8 @@ public class AuthorIdentificationLayout extends VerticalLayout {
     private AuthorService authorService;
     private Label timeToLoadLabel;
     private Button refreshClassifierButton;
+    private Button testAlgorithmButton;
+    private Label algorithmPrecisionLabel;
     public AuthorIdentificationLayout(){
         initAuthorService();
         initProjectDescriptionTextField();
@@ -37,8 +39,28 @@ public class AuthorIdentificationLayout extends VerticalLayout {
         initPossibleAuthorsGrid();
         initTimeToLoadLabel();
         initRefreshClassifierButton();
+        initAlgorithmPrecisionLabel();
+        initTestAlgorithmButton();
         add(new HorizontalLayout(projectNameTextArea, projectDescriptionTextArea, projectKeywordsTextArea),
-                getPossibleAuthorIDButton, timeToLoadLabel, refreshClassifierButton, possibleAuthorsGrid);
+                getPossibleAuthorIDButton, timeToLoadLabel, refreshClassifierButton, testAlgorithmButton, algorithmPrecisionLabel,  possibleAuthorsGrid);
+    }
+
+    private void initAlgorithmPrecisionLabel(){
+        algorithmPrecisionLabel = new Label("");
+    }
+
+    private void initTestAlgorithmButton(){
+        testAlgorithmButton = new Button("Test Algorithm", clickEvent -> {
+           try{
+               double precision = authorService.testAlgorithm();
+               if(precision==-1)
+                   Notification.show("Classifier is updating").setPosition(Notification.Position.TOP_CENTER);
+              else
+                  algorithmPrecisionLabel.setText("Precision is: "+String.valueOf(authorService.testAlgorithm())+"%");
+           } catch (UnexpectedException e) {
+               e.printStackTrace();
+           }
+        });
     }
 
     private void initRefreshClassifierButton(){
@@ -103,7 +125,7 @@ public class AuthorIdentificationLayout extends VerticalLayout {
            } catch (UnexpectedException | ExecutionException | InterruptedException e) {
                e.printStackTrace();
            }
-           timeToLoadLabel.setText("Time to get the result: " + (System.currentTimeMillis()-startTime));
+           timeToLoadLabel.setText("Time to get the result: " + (System.currentTimeMillis()-startTime) + "ms");
         });
     }
 

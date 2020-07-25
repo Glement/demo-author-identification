@@ -123,10 +123,16 @@ public class AuthorService {
         else
             throw new UnexpectedException("Unexpected code: " + response.getStatus());
     }
-    /*public List<AuthorDto> getAuthors(){
-        client = ClientBuilder.newClient();
-        target = client.target("http://localhost:8080/authors");
-        List<AuthorDto> list = new ArrayList<>();
-        return target.request(MediaType.APPLICATION_JSON).get(list.getClass());
-    }*/
+
+    public double testAlgorithm() throws UnexpectedException {
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(API_PATH+"test-algorithm");
+        Response response = target.request(MediaType.APPLICATION_JSON).get();
+        if (response.getStatus()==200)
+            return response.readEntity(Double.class);
+        else if(response.getStatus()==202)
+            return -1;
+        else
+            throw new UnexpectedException("Unexpected code: " + response.getStatus());
+    }
 }

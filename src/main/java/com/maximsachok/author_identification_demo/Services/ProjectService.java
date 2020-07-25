@@ -44,7 +44,7 @@ public class ProjectService {
 
     public Optional<Long> createProject(ProjectDto projectDto) throws UnexpectedException, ExecutionException, InterruptedException {
         Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(API_PATH+"author");
+        WebTarget target = client.target(API_PATH+"project");
         Response response = target.request(MediaType.APPLICATION_JSON).buildPost(Entity.json(projectDto)).submit().get();
         if (response.getStatus()==201)
             return Optional.of(response.readEntity(Long.class));
