@@ -56,7 +56,7 @@ public class AuthorIdentificationLayout extends VerticalLayout {
                if(precision==-1)
                    Notification.show("Classifier is updating").setPosition(Notification.Position.TOP_CENTER);
               else
-                  algorithmPrecisionLabel.setText("Precision is: "+String.valueOf(authorService.testAlgorithm())+"%");
+                  algorithmPrecisionLabel.setText("Accuracy is: "+String.valueOf(authorService.testAlgorithm())+"%");
            } catch (UnexpectedException e) {
                e.printStackTrace();
            }
